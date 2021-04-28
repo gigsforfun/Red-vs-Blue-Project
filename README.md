@@ -5,7 +5,8 @@ This project was created to act as both, an attacker and a defender of a cyber-a
 As an attacker, gathering information about the systems is key. Finding possible vulnerabilities, misconfigurations or anything that could allow us to compromise the victim machine.
 
 As a defender, looking at the logs, trying to determine how this attack was carried out and trying to determine what vulnerabilities were found, what the attacker had access to, what is the impact of the whole attack, and how to defend the systems from future attacks.
-
+</br>
+</br>
 ### Read Team
 
 Using nmap to find all the devices on the network and what services are they running, as well as, trying to identify the version and port of those services.
@@ -15,69 +16,62 @@ Using nmap to find all the devices on the network and what services are they run
 <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-21%2017_56_05-Window.png"/>
 <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-21%2017_57_14-Window.png"/>
 </p> 
-
-
-
+</br>
+</br>
 Once the nmap scan has finished we notice IP `192.168.1.105` is running an Apache server on port 80.
-
+</br>
 Opening this IP on the web browser takes us to what seems to be company directories.
 <p align="center">
  <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-21%2018_01_53-Window.png"/>
 </p>
- 
- 
+</br> 
+</br>
 
 Looking around these directories we find really useful information like possible employee usernames. 
-
 <p align="center">
  <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-21%2018_18_40-Window.png"/>
 </p>
-
-
-
+</br>
+</br>
 Due to poor configuration and lack of confidentiality we come across an interesting directory “/company_folders/secret_folder” 
-
 <p align="center">
  <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-21%2018_11_57-Window.png"/>
  <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-21%2018_15_14-Window.png"/>
 </p>
-
-
+</br>
+</br>
 `Using dirbuster we can try to find other directories that might not be visible, we can leave that running in the background.`
-
-
+</br>
+</br>
 Now that we have an interesting directory to look at, we can try accessing it.
 <p align="center">
  <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-21%2018_28_32-Window.png"/>
 </p>
-
-
-
+</br>
+</br>
 Access to “secret_folder” requires authentication. From our information gathering stage we know Ashton is managing this directory, assuming his username is something like “ashton” we can try to brute force his password using Hydra.
 <p align="center">
 <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-23%2008_36_04-Red%20vs%20Blue%20(3)%20-%20ml-lab-9930d6c8-0122-48dc-8088-0fab0564893b.southcentralus.clo.png"/>
+ </br>
 <img sr="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-23%2008_41_00-Red%20vs%20Blue%20(3)%20-%20ml-lab-9930d6c8-0122-48dc-8088-0fab0564893b.southcentralus.clo.png"/>
  </p>
-
-
-
+</br>
+</br>
 After trying the credentials gathered from Hydra, we get access to the secret folder.
 <p align="center">
  <img src"https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-23%2008_42_24-Window.png"/> 
 </p>
-
-
+</br>
+</br>
 There is a personal note containing more useful information. There is a MD5 hash for Ryan’s account and instruction on how to access a “webdav” directory.
 <p align="center">
  <img src"(https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-23%2008_43_50-Window.png)"/> 
 </p>
-
- 
-First let’s use `https://crackstation.net` to crack Ryan’s hash. We found a match for that hash, and the passwords is “linux4u” 
+</br>
+First let’s use `https://crackstation.net` to crack Ryan’s hash. We found a match for that hash, and the passwords is `inux4u`
 <p align="center">
  <img src"(https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-23%2008_50_06-Window.png)"/> 
 </p>
-
 
 Taking a look at the instructions in the personal note, seems like they can be applied to our kali machine. 
 `Going into Files > Other Locations > Under “Connect to Server” type dav://192.168.1.105/webdav/` this will prompt us to authenticate, in this case we know we are using Ryan’s account.
@@ -92,62 +86,56 @@ Since we are able to upload files, let’s get a reverse shell into the webdav s
  <img src"https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-24%2007_31_16-Window.png"/>
  <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-24%2007_33_29-Window.png"/>
 </p>
-
-
-
+</br>
+</br>
 By this time our `Dirbuster` scan is finished, but it didn't provide any extra information to what we have gathered so far.
 
 [Dirbuster scan results](https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-23%2008_58_07-Window.png)
 
 [Dirbuster scan results](https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-23%2008_58_20-Window.png)
-
-
+</br>
+</br>
 Now that our reverse shell is in place, lets start a netcat listener running the following command:
 `nc -lvnp 443`
 <p align="center">
  <img src"https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-24%2007_36_04-Window.png"/> 
 </p>
-
- 
-
+</br>
+</br>
 We can now navigate to the webdav server in our browser by going to `192.168.1.105/webdav` and this requires authentication again, so we use Ryan’s account one more time.
 <p align="center">
  <img src"https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-24%2007_38_07-Window.png"/> 
 </p>
-
- 
+</br>
+</br>
 We see our reverse shell is in place, all we need to do is run it. Nothing should happen on the web browser other than the page seems to never finish loading, but going back to our netcat listener we see our reverse shell connection has been stablished. We now have access to the system.
 <p align="center">
  <img src"https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-24%2007_40_32-Window.png"/> 
 </p>
-
-
-
+</br>
+</br>
 Now we look for our flag, in this case it is in root directory in flag.txt file.
 <p align="center">
  <img src"https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-24%2008_18_44-Window.png"/> 
 </p>
-
- 
-
+</br> 
+</br>
 We could also upgrade the shell to get more functionality and switch to different users such as ryan and ashton.
 This can be achieved by running the following command: `python -c 'import pty; pty.spawn("/bin/bash")'`
 <p align="center">
  <img src"https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-24%2015_48_50-Red%20vs%20Blue%20-%20ml-lab-9930d6c8-0122-48dc-8088-0fab0564893b.southcentralus.cloudap.png"/> 
 </p>
-
-
-
+</br>
+</br>
 After poking around with different users nothing else seem to be of interest within their home directories. 
 
 After looking around some more we can see this machine is running an unpatched version of sudo. This can be exploited by a heap buffer overflow vulnerability CVE-2021-3156, that could lead to privilege scalation.
 <p align="center">
  <img src"https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-24%2016_02_10-Red%20vs%20Blue%20-%20ml-lab-9930d6c8-0122-48dc-8088-0fab0564893b.southcentralus.cloudap.png"/> 
 </p>
-
- 
-
-
+</br>
+</br>
+</br>
 ###Blue Team
 
 As part of the Blue Team, we are going to analyze all the logs during the time the system was attacked.
