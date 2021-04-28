@@ -73,13 +73,15 @@ After trying the credentials gathered from Hydra, we get access to the secret fo
 
 There is a personal note containing more useful information. There is a MD5 hash for Ryan’s account and instruction on how to access a `webdav` directory.
 <p align="center">
- <img src="(https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-23%2008_43_50-Window.png)"/> 
+ <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-23%2008_43_50-Window.png"/> 
 </p>
+</br>
+
 First let’s use `https://crackstation.net` to crack Ryan’s hash. We found a match for that hash, and the passwords is `inux4u`
 <p align="center">
- <img src="(https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-23%2008_50_06-Window.png)"/> 
+ <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-23%2008_50_06-Window.png"/> 
 </p>
-
+</br>
 Taking a look at the instructions in the personal note, seems like they can be applied to our kali machine. 
 Going into `Files > Other Locations > Under “Connect to Server” type dav://192.168.1.105/webdav/` this will prompt us to authenticate, in this case we know we are using Ryan’s account.
 
