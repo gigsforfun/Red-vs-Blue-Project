@@ -201,7 +201,7 @@ Looking a little deeper into the HTTP response code 401, we find the tools the a
 </br> 
 </br>
 
-Following the `Hydra` trail by searching the user agent we find find their `Hydra` target.
+Following the `Hydra` trail by searching the user agent we find their `Hydra` target.
 This shows the URL path was `/company_folders/secret_folder/`
 <p align="center">
  <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Blue-Team/Images/user-agent-hydra.png"/> 
@@ -223,16 +223,14 @@ This could be a reverse shell, we can confirm this by going into the webdav fold
 Inside `shell.php` the connection back to the attacker’s machine is set to be made over 443.
 </br>
 
-*Notes: Trying to correlate the time the* `shell.php` *was requested with processes running at that same time (using metricbeat logs) did not bring any results that would indicate the file opens a reverse shell.*
-
-*Checking filebeat syslogs for any process name that would lead to the reverse shell traffic didn’t provide any results either.*
- 
-
-
-
-
+*Notes: Trying to correlate the time the* `shell.php` *was requested with processes running at that same time (using metricbeat logs) did not bring any results that would indicate the file opens a reverse shell. Additionally, checking filebeat syslogs for any process name that would lead to the reverse shell traffic didn’t provide any results either.*
+</br>
+</br>
+</br>
 
 ### Findings and Mitigations
+</br>
+
 The first step was doing some reconnaissance with Nmap. This type of scans can be difficult to detect if they are carried out slowly without making too much noise.
 There are some configurations that can be made to prevent some scans, but it will not stop all of them.
 *	Blocking ICMP so the machine does not respond to ping requests can be used, but it can be easily bypass by using the nmap flag -Pn. 
