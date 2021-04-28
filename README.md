@@ -16,12 +16,15 @@ Using nmap to find all the devices on the network and what services are they run
 <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-21%2017_57_14-Window.png"/>
 </p> 
 
+
+
 Once the nmap scan has finished we notice IP `192.168.1.105` is running an Apache server on port 80.
 
 Opening this IP on the web browser takes us to what seems to be company directories.
 <p align="center">
  <img src="https://github.com/gigsforfun/Red-vs-Blue-Project/blob/main/Red-Team/Images/2021-04-21%2018_01_53-Window.png"/>
 </p>
+ 
  
 
 Looking around these directories we find really useful information like possible employee usernames. 
